@@ -12,13 +12,13 @@ import (
 
 //Mcloud type
 type Mcloud struct {
-	Environments map[string]*Environment `json:"Environments"`
+	Projects map[string]*Project `json:"Projects"`
 }
 
-//newEnvironment main constructor, runs during each execurtion
+//newProject main constructor, runs during each execurtion
 func newMcloud() *Mcloud {
 	mc := &Mcloud{
-		Environments: make(map[string]*Environment),
+		Projects: make(map[string]*Project),
 	}
 	mc.load(statefile)
 

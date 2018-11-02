@@ -1,18 +1,18 @@
 package cmd
 
-//Environment type
-type Environment struct {
-	Name  string
-	MVPCs map[string]*MVPC
+//Project type
+type Project struct {
+	Name     string
+	Networks map[string]*Network
 }
 
-//newEnvironment constructor
+//newProject constructor
 
-func (mc *Mcloud) newEnvironment(n string) *Environment {
-	mc.Environments[n] = &Environment{
-		Name:  n,
-		MVPCs: make(map[string]*MVPC),
+func (mc *Mcloud) newProject(n string) *Project {
+	mc.Projects[n] = &Project{
+		Name:     n,
+		Networks: make(map[string]*Network),
 	}
 
-	return mc.Environments[n]
+	return mc.Projects[n]
 }
