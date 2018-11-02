@@ -20,7 +20,7 @@ import (
 
 // createProjectCmd represents the createProject command
 var createProjectCmd = &cobra.Command{
-	Use:   "environment",
+	Use:   "project",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -36,14 +36,4 @@ to quickly create a Cobra application.`,
 func init() {
 	createCmd.AddCommand(createProjectCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createProjectCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	createProjectCmd.Flags().String("name", "n", "Name for the environment")
-	createProjectCmd.MarkFlagRequired("name")
 }
