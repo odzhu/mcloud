@@ -10,23 +10,41 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
+//statefile is default state file name located in working dir
+const statefile string = ".state.mc"
+const defaultWorkDir string = "workdir"
+
 //Mcloud type
 type Mcloud struct {
 	Projects map[string]*Project `json:"Projects"`
+	workdir  string
 }
 
 //newProject main constructor, runs during each execurtion
 func newMcloud() *Mcloud {
 	mc := &Mcloud{
 		Projects: make(map[string]*Project),
+		workdir:  defaultWorkDir,
 	}
 	mc.load(statefile)
 
 	return mc
 }
 
-//statefile is default state file name located in working dir
-const statefile string = ".state.mc"
+//newProject constructor
+
+func (mc *Mcloud) newProject(n string) *Project {
+	mc.Projects[n] = &Project{
+		Name:     n,
+		Networks: make(map[string]*Network),
+		TFC: &TFConf{
+			//by default terraform workdir will be same as project name
+			workdir: mc.workdir + "/" + n,
+		},
+	}
+
+	return mc.Projects[n]
+}
 
 //load state from file
 func (s *Mcloud) load(f string) (err error) {

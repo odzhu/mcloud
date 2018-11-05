@@ -4,15 +4,14 @@ package cmd
 type Project struct {
 	Name     string
 	Networks map[string]*Network
+	TFC      *TFConf
 }
 
-//newProject constructor
-
-func (mc *Mcloud) newProject(n string) *Project {
-	mc.Projects[n] = &Project{
-		Name:     n,
-		Networks: make(map[string]*Network),
+//newNetwork creates new Network
+func (en *Project) newNetwork(n string) *Network {
+	en.Networks[n] = &Network{
+		Name: n,
+		Vpcs: make(map[string]*string),
 	}
-
-	return mc.Projects[n]
+	return en.Networks[n]
 }
