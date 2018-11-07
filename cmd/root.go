@@ -43,7 +43,7 @@ to quickly create a Cobra application.`,
 	//	Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		mcloud.show()
-		mcloud.save(cmd.Flag(statefileFlagName).Value.String())
+		//mcloud.save(cmd.Flag(statefileFlagName).Value.String())
 	},
 }
 

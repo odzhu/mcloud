@@ -29,7 +29,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		mcloud.newProject(cmd.Flag("name").Value.String())
+		mcloud.addProject(cmd.Flag("name").Value.String())
+		//mcloud.Projects[cmd.Flag("name").Value.String()].addTFConf()
 	},
 }
 

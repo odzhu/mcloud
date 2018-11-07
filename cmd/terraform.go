@@ -2,25 +2,17 @@ package cmd
 
 //TFConf is responsible for maintaing terrform configuration
 type TFConf struct {
-	workdir string
+	Workdir string
+	Parent  *Project
 }
 
-//get makes terraform get
-func (*TFConf) get() (err error) {
-	return
-}
+//addTFConf initializes new object
 
-//render object configuration to the filesystem
-func (*TFConf) render() (err error) {
-	return
-}
-
-//plan is doing terraform plan
-func (*TFConf) plan() (err error) {
-	return
-}
-
-//apply is doing terraform apply
-func (*TFConf) apply() (err error) {
-	return
+func (p *Project) addTFConf() {
+	p.TFC = TFConf{
+		Parent:  p,
+		Workdir: p.Parent.Workdir + "/" + p.Name,
+	}
+	//fmt.Println("addTFConfig seing parent variables in that way")
+	//spew.Dump(p.Parent)
 }
