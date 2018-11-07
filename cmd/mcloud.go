@@ -47,11 +47,11 @@ func (mc *Mcloud) newProject(n string) *Project {
 }
 
 //load state from file
-func (s *Mcloud) load(f string) (err error) {
+func (mc *Mcloud) load(f string) (err error) {
 	var bytestate []byte
 
 	if bytestate, err = ioutil.ReadFile(f); err == nil {
-		err = json.Unmarshal(bytestate, &s)
+		err = json.Unmarshal(bytestate, &mc)
 	}
 
 	return err
