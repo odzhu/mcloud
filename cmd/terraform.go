@@ -3,7 +3,7 @@ package cmd
 //TFConf is responsible for maintaing terrform configuration
 type TFConf struct {
 	Workdir string
-	Parent  *Project
+	Parent  *Project `json:"-"`
 }
 
 //addTFConf initializes new object

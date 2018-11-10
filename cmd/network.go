@@ -4,5 +4,5 @@ package cmd
 type Network struct {
 	Name   string
 	Vpcs   map[string]string
-	Parent *Project
+	Parent *Project `json:"-"`
 }

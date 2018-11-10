@@ -4,7 +4,7 @@ package cmd
 type Project struct {
 	Name     string
 	Networks map[string]Network
-	Parent   *Mcloud
+	Parent   *Mcloud `json:"-"` // ignore on un/marshal
 	TFC      TFConf
 }
 
