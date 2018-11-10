@@ -47,10 +47,28 @@ func (mc *Mcloud) load(f string) (err error) {
 	var bytestate []byte
 
 	if bytestate, err = ioutil.ReadFile(f); err == nil {
-		err = json.Unmarshal(bytestate, &mc)
+		err = json.Unmarshal(bytestate, mc)
 	}
 
 	return err
+}
+
+//UnmarshalJSON is method for implementation of json.Unmarshaller interface
+func (mc *Mcloud) UnmarshalJSON(data []byte) error {
+	type tmp Mcloud
+	if err := json.Unmarshal(data, (*tmp)(mc)); err != nil { //TODO: clarify this form (*tmp)(mc)
+		return err
+	}
+
+	// set Parent of all projects
+	for _, p := range mc.Projects {
+		p.Parent = mc
+		p.TFC.Parent = p
+		for _, n := range p.Networks {
+			n.Parent = p
+		}
+	}
+	return nil
 }
 
 //save saves state to statefile
