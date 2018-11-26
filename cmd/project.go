@@ -16,3 +16,11 @@ func (p *Project) addNetwork(n string) {
 		Parent: p,
 	}
 }
+
+//getTemplates returns unrendered templates
+func (p *Project) getTemplate() string {
+	const template = `
+	My template
+`
+	return template
+}
