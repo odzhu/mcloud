@@ -28,15 +28,15 @@ resource "azurerm_kubernetes_cluster" "admin" {
   name                = "${var.env_name}"
   location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.admin.name}"
-  dns_prefix          = "admin"
+  dns_prefix          = "${var.env_name}"
   kubernetes_version = "${var.admin_k_ver}"
-  role_based_access_control {
+  /*role_based_access_control {
     azure_active_directory {
       client_app_id     = "${azurerm_azuread_service_principal.admin.application_id}"
       server_app_id     = "${azurerm_azuread_service_principal.admin.id}"
       server_app_secret = "${random_string.password.result}"
     }
-  }
+  }*/
 
   agent_pool_profile {
     name            = "default"

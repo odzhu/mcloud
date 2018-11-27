@@ -1,6 +1,6 @@
 
 variable "env_name" {
-  default = "admin"
+  default = "admink8s"
 }
 variable "location" {
     default = "westeurope"
