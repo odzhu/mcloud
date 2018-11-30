@@ -22,15 +22,14 @@ resource "azurerm_azuread_service_principal_password" "admin" {
   }
 }
 
-
-
 resource "azurerm_kubernetes_cluster" "admin" {
   name                = "${var.env_name}"
   location            = "${var.location}"
   resource_group_name = "${azurerm_resource_group.admin.name}"
   dns_prefix          = "${var.env_name}"
   kubernetes_version = "${var.admin_k_ver}"
-  /*role_based_access_control {
+  /*this is not correct , separate service principal must be created https://docs.microsoft.com/en-us/azure/aks/aad-integration
+  role_based_access_control {
     azure_active_directory {
       client_app_id     = "${azurerm_azuread_service_principal.admin.application_id}"
       server_app_id     = "${azurerm_azuread_service_principal.admin.id}"
