@@ -45,4 +45,19 @@ data "kubernetes_service" "nginx-ingress" {
     name = "${helm_release.nginx-ingress.name}-controller"
     namespace = "${helm_release.nginx-ingress.namespace}"
   }
+  
 }
+
+
+resource "null_resource" "nginx-ingress-domain" {
+  provisioner "local-exec" {
+    command = "IP=${data.kubernetes_service.nginx-ingress.load_balancer_ingress.0.ip} && DNSNAME=${helm_release.nginx-ingress.name} && PUBLICIPID=$(az network public-ip list --query \"[?ipAddress!=null]|[?contains(ipAddress, '$IP')].[id]\" --output tsv) && az network public-ip update --ids $PUBLICIPID --dns-name $DNSNAME"
+  }
+}
+
+
+data "azurerm_public_ips" "admin_pips" {
+  resource_group_name = "${azurerm_kubernetes_cluster.admin.node_resource_group}"
+  attached            = true
+}
+

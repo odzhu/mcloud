@@ -8,3 +8,7 @@ output "vpn_output" {
 output "admin_kubernetes_ingress_public_ip" {
   value = "${data.kubernetes_service.nginx-ingress.load_balancer_ingress.0.ip}"
 }
+
+output "admin_kubernetes_ingress_public_hostname" {
+  value = "${data.azurerm_public_ips.admin_pips.public_ips}"
+}
