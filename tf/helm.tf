@@ -22,3 +22,27 @@ resource "helm_release" "vpn" {
     chart     = "stable/openvpn"
     wait = false
 }
+
+resource "helm_release" "nginx-ingress" {
+    name = "nginx-ingress"
+    repository = "${helm_repository.stable.metadata.0.name}"
+    chart     = "stable/nginx-ingress"
+    wait = false
+    namespace = "kube-system"
+    set {
+        name = "controller.replicaCount"
+        value = "2"
+    }
+    set {
+        name = "rbac.create"
+        value = "false"
+    }
+
+}
+
+data "kubernetes_service" "nginx-ingress" {
+  metadata {
+    name = "${helm_release.nginx-ingress.name}-controller"
+    namespace = "${helm_release.nginx-ingress.namespace}"
+  }
+}
