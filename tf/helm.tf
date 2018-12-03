@@ -40,12 +40,20 @@ resource "helm_release" "nginx-ingress" {
 
 }
 
+provider "kubernetes" {
+        host                   = "${azurerm_kubernetes_cluster.admin.kube_config.0.host}"
+        client_certificate     = "${base64decode(azurerm_kubernetes_cluster.admin.kube_config.0.client_certificate)}"
+        client_key             = "${base64decode(azurerm_kubernetes_cluster.admin.kube_config.0.client_key)}"
+        cluster_ca_certificate = "${base64decode(azurerm_kubernetes_cluster.admin.kube_config.0.cluster_ca_certificate)}" 
+}
+
+
 data "kubernetes_service" "nginx-ingress" {
   metadata {
     name = "${helm_release.nginx-ingress.name}-controller"
     namespace = "${helm_release.nginx-ingress.namespace}"
   }
-  
+ depends_on = ["helm_release.nginx-ingress"] 
 }
 
 
