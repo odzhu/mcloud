@@ -29,14 +29,16 @@ resource "helm_release" "nginx-ingress" {
     chart     = "stable/nginx-ingress"
     wait = false
     namespace = "kube-system"
-    set {
-        name = "controller.replicaCount"
-        value = "2"
-    }
-    set {
-        name = "rbac.create"
-        value = "false"
-    }
+    values = [
+      <<-EOF
+        rbac:
+          create: false
+        controller:
+          replicaCount: 2
+          service:
+            annotations: {service.beta.kubernetes.io/azure-load-balancer-internal: true}
+      EOF
+]
 
 }
 
@@ -55,17 +57,3 @@ data "kubernetes_service" "nginx-ingress" {
   }
  depends_on = ["helm_release.nginx-ingress"] 
 }
-
-
-resource "null_resource" "nginx-ingress-domain" {
-  provisioner "local-exec" {
-    command = "IP=${data.kubernetes_service.nginx-ingress.load_balancer_ingress.0.ip} && DNSNAME=${helm_release.nginx-ingress.name} && PUBLICIPID=$(az network public-ip list --query \"[?ipAddress!=null]|[?contains(ipAddress, '$IP')].[id]\" --output tsv) && az network public-ip update --ids $PUBLICIPID --dns-name $DNSNAME"
-  }
-}
-
-
-data "azurerm_public_ips" "admin_pips" {
-  resource_group_name = "${azurerm_kubernetes_cluster.admin.node_resource_group}"
-  attached            = true
-}
-
