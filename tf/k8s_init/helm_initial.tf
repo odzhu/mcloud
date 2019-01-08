@@ -1,19 +1,33 @@
-provider "kubernetes" {
-        host                   = "${var.host}"
-        client_certificate     = "${base64decode(var.client_certificate)}"
-        client_key             = "${base64decode(var.client_key)}"
-        cluster_ca_certificate = "${base64decode(var.cluster_ca_certificate)}" 
-}
 
 provider "helm" {
-    kubernetes {
-        host                   = "${var.host}"
-        client_certificate     = "${base64decode(var.client_certificate)}"
-        client_key             = "${base64decode(var.client_key)}"
-        cluster_ca_certificate = "${base64decode(var.cluster_ca_certificate)}"
-    }
     tiller_image = "gcr.io/kubernetes-helm/tiller:v2.11.0"
     install_tiller = true
+    service_account = "tiller"
+    namespace = "kube-system"
+}
+
+resource "kubernetes_service_account" "tiller" {
+  metadata {
+    name = "tiller"
+    namespace = "kube-system"
+  }
+}
+resource "kubernetes_cluster_role_binding" "tiller" {
+  metadata {
+        name = "tiller"
+  }
+  subject {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "User"
+    name      = "system:serviceaccount:kube-system:tiller"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind  = "ClusterRole"
+    name = "cluster-admin"
+  }
+  depends_on = ["kubernetes_service_account.tiller"]
 }
 
 resource "helm_repository" "stable" {
@@ -41,11 +55,14 @@ resource "helm_release" "nginx-ingress" {
         controller:
           replicaCount: 2
           service:
-            annotations: {service.beta.kubernetes.io/azure-load-balancer-internal: true}
+            annotations: 
+              service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+              service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
       EOF
 ]
-
 }
+
+/*
 data "kubernetes_service" "rancher-ingress" {
   metadata {
     name = "${helm_release.nginx-ingress.name}-controller"
@@ -53,6 +70,4 @@ data "kubernetes_service" "rancher-ingress" {
   }
   depends_on = ["helm_release.nginx-ingress"]
 }
-
-
-
+*/
