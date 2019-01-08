@@ -2,7 +2,7 @@ module "adminvpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   cidr = "${var.adminvpc_cidr}"
-  enable_dns_hostnames= "true"
+  enable_dns_hostnames = "true"
   name = "${var.name}"
   azs = "${var.adminvpc_azs}"
   private_subnets = "${var.adminvpc_private_subnets}"
@@ -13,5 +13,17 @@ module "adminvpc" {
 
   tags = {
     Environment = "dev"
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${var.name}" = "shared",
+    "kubernetes.io/role/internal-elb" = 1
+  }
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${var.name}" = "shared"
+  }
+
+  vpc_tags = {
+    "kubernetes.io/cluster/${var.name}" = "shared"
   }
 }

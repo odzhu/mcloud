@@ -5,5 +5,13 @@ module "eks" {
   tags                  = {Name = "${var.name}", Environment = "dev"}
   vpc_id                = "${module.adminvpc.vpc_id}"
   manage_aws_auth       = true
-  write_kubeconfig      = false
+  write_kubeconfig      = true
+  config_output_path    = "./tmp/"
+}
+
+resource "null_resource" "kubectl_config" {
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --name ${var.name}"
+  }
+depends_on = ["module.eks"]
 }
