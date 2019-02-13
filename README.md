@@ -4,7 +4,7 @@ description: 'mcloud: a multi-cloud framework you will love.'
 
 # About mcloud
 
-## Start working with multicloud in one shot!
+## This is my multicloud sandbox project used for PoC purposes only!
 
 Becoming a super hero is a fairly straight forward process:
 
