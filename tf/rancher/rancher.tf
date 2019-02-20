@@ -1,8 +1,7 @@
 resource "helm_repository" "rancher-stable" {
-  name = "rancher-stable"
-  url  = "https://releases.rancher.com/server-charts/stable"
+  name = "rancher-latest"
+  url  = "https://releases.rancher.com/server-charts/latest"
 }
-
 
 resource "helm_release" "cert-manager" {
     name = "cert-manager"
@@ -11,25 +10,8 @@ resource "helm_release" "cert-manager" {
     wait = false
     force_update = true
     namespace = "kube-system"
-
-    set {
-        name = "rbac.create"
-        value = "false"
-    }
-
+    version = "v0.5.2"
 }
-
-/*
-resource "azurerm_dns_a_record" "rancher" {
-  name                = "rancher"
-  zone_name           = "${azurerm_dns_zone.admin.name}"
-  resource_group_name = "${azurerm_resource_group.admin.name}"
-  ttl                 = 300
-  records             = ["${data.kubernetes_service.rancher-ingress.load_balancer_ingress.0.ip}"]
-}
-
-*/
-
 
 
 /*

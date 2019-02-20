@@ -30,9 +30,3 @@ provider "helm" {
     namespace = "kube-system"
 }
 
-resource "helm_repository" "stable" {
-  name = "stable"
-  url  = "https://kubernetes-charts.storage.googleapis.com"
-  depends_on = ["kubernetes_cluster_role_binding.tiller"]
-}
-
