@@ -9,6 +9,7 @@ module "eks" {
   config_output_path    = "./tmp/"
 }
 
+
 resource "null_resource" "kubectl_config" {
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --name ${var.name}"
