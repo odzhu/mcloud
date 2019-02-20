@@ -10,7 +10,6 @@ resource "helm_release" "vpn" {
     chart     = "stable/openvpn"
     wait = false
 }
-/*
 resource "helm_release" "nginx-ingress" {
     name = "nginx-ingress"
     repository = "${helm_repository.stable.metadata.0.name}"
@@ -20,7 +19,7 @@ resource "helm_release" "nginx-ingress" {
     values = [
       <<-EOF
         rbac:
-          create: false
+          create: true
         controller:
           replicaCount: 2
           service:
@@ -30,10 +29,9 @@ resource "helm_release" "nginx-ingress" {
       EOF
 ]
 
-depends_on = ["kubernetes_cluster_role_binding.tiller"]
 }
 
-/*
+
 data "kubernetes_service" "rancher-ingress" {
   metadata {
     name = "${helm_release.nginx-ingress.name}-controller"
@@ -41,4 +39,3 @@ data "kubernetes_service" "rancher-ingress" {
   }
   depends_on = ["helm_release.nginx-ingress"]
 }
-*/
