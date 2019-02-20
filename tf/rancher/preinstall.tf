@@ -2,15 +2,15 @@ resource "helm_repository" "stable" {
   name = "stable"
   url  = "https://kubernetes-charts.storage.googleapis.com"
 }
-/*
+
+
 resource "helm_release" "vpn" {
     name = "openvpn"
     repository = "${helm_repository.stable.metadata.0.name}"
     chart     = "stable/openvpn"
     wait = false
-    depends_on = ["kubernetes_cluster_role_binding.tiller"]
 }
-
+/*
 resource "helm_release" "nginx-ingress" {
     name = "nginx-ingress"
     repository = "${helm_repository.stable.metadata.0.name}"
