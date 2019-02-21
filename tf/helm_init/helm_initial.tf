@@ -1,4 +1,3 @@
-
 resource "kubernetes_service_account" "tiller" {
   metadata {
     name = "tiller"
@@ -28,5 +27,17 @@ provider "helm" {
     install_tiller = true
     service_account = "tiller"
     namespace = "kube-system"
+}
+
+resource "helm_repository" "stable" {
+  name = "stable"
+  url  = "https://kubernetes-charts.storage.googleapis.com"
+}
+
+resource "helm_release" "vpn" {
+    name = "openvpn"
+    repository = "${helm_repository.stable.metadata.0.name}"
+    chart     = "stable/openvpn"
+    wait = false
 }
 

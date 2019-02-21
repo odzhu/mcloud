@@ -25,4 +25,5 @@ resource "helm_release" "rancher" {
         name = "hostname"
         value = "${data.kubernetes_service.rancher-ingress.load_balancer_ingress.0.hostname}"
     }
+    depends_on = ["helm_release.nginx-ingress"]
 }
