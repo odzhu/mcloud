@@ -7,7 +7,7 @@ resource "helm_release" "nginx-ingress" {
     name = "nginx-ingress"
     repository = "${helm_repository.stable.metadata.0.name}"
     chart     = "stable/nginx-ingress"
-    wait = false
+    #wait = false
     namespace = "kube-system"
     values = [
       <<-EOF

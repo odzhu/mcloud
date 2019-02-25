@@ -1,6 +1,12 @@
+resource "null_resource" "rancherrepworkaround" {
+  provisioner "local-exec" {
+    command = "helm repo add rancher-latest https://releases.rancher.com/server-charts/latest"
+  }
+}
 resource "helm_repository" "rancher-latest" {
   name = "rancher-latest"
   url  = "https://releases.rancher.com/server-charts/latest"
+  depends_on = ["null_resource.rancherrepworkaround"]
 }
 
 resource "helm_release" "cert-manager" {
